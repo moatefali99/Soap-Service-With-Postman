@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "a5c5f6fe-8d9a-483a-bb96-2ce1b6baf9a8",
+		"name": "Soap Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24880987"
+	},
+	"item": [
+		{
+			"name": "NumberToWordConvert",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = xml2Json(pm.response.text());\r",
+							"console.log(responseJson);\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate String Response\",function(){\r",
+							"    const actualValue = responseJson[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToWordsResponse\"][\"m:NumberToWordsResult\"];\r",
+							"    pm.expect(pm.collectionVariables.get(\"result\")).to.be.eql(actualValue);\r",
+							"\r",
+							"});\r",
+							"pm.test(\"Parsing The Response\",function(){\r",
+							"    pm.expect(pm.response.text()).include(pm.collectionVariables.get(\"result\"));\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">\r\n      <ubiNum>{{number}}</ubiNum>\r\n    </NumberToWords>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
+					"protocol": "https",
+					"host": [
+						"www",
+						"dataaccess",
+						"com"
+					],
+					"path": [
+						"webservicesserver",
+						"NumberConversion.wso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NumberToDollars",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonResponse = xml2Json(pm.response.text());\r",
+							"console.log(jsonResponse);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate Response\", function () {\r",
+							"    const ActualResult = jsonResponse[\"soap:Envelope\"][\"soap:Body\"][\"m:NumberToDollarsResponse\"][\"m:NumberToDollarsResult\"];\r",
+							"\r",
+							"    pm.expect(pm.collectionVariables.get(\"output\")).to.be.eql(ActualResult);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Parsing The Response\", function () {\r",
+							"    pm.expect(pm.response.text()).include(pm.collectionVariables.get(\"output\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <NumberToDollars xmlns=\"http://www.dataaccess.com/webservicesserver/\">\r\n      <dNum>{{num}}</dNum>\r\n    </NumberToDollars>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
+					"protocol": "https",
+					"host": [
+						"www",
+						"dataaccess",
+						"com"
+					],
+					"path": [
+						"webservicesserver",
+						"NumberConversion.wso"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "number",
+			"value": "400",
+			"type": "string"
+		},
+		{
+			"key": "result",
+			"value": "four hundred",
+			"type": "string"
+		},
+		{
+			"key": "num",
+			"value": "250.5548",
+			"type": "string"
+		},
+		{
+			"key": "output",
+			"value": "two hundred and fifty dollars and fifty five cents",
+			"type": "string"
+		}
+	]
+}
